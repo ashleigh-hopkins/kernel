@@ -83,15 +83,10 @@ trait ApiTrait
             return null;
         }
 
-        $strand->throw(
-            new UnexpectedValueException(
-                'The yielded pair ('
-                . Repr::repr($key)
-                . ', '
-                . Repr::repr($value)
-                . ') does not describe any known operation.'
-            )
-        );
+        logWarning(static::class, 'The yielded pair does not describe any known operation.',
+            compact('key', 'value', 'strand'));
+ 
+        $strand->send($value);
 
         return null;
     }
